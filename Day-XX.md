@@ -147,6 +147,7 @@ Application Data
 ↓
 
 TCP = Segment
+<img align="right" width="50%" height="523" alt="image" src="https://github.com/user-attachments/assets/fe8b648d-8408-47a3-9ef8-7094b6469a81" />
 
 UDP = Datagram
 
