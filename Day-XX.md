@@ -292,6 +292,7 @@ Common in critical infrastructure.
 
 ## IP Address Classes
 An IP (Internet Protocol) address is a unique numerical label assigned to every device connected to a computer network. It acts like a digital mailing address, allowing your devices to send, receive, and route data across the internet and local networks
+<img width="211" height="239" alt="image" src="https://github.com/user-attachments/assets/5feb68a9-fa40-4cb7-9701-64d16a973894" />
 
 The Two Main Types:
 ### Private IP Ranges
@@ -308,8 +309,8 @@ Accessible from the Internet.
 
 Example:
 
-49.69.147.197
-
+So, what makes an IP address? An IP address comprises four octets, i.e., 32 bits. Being 8 bits, an octet allows us to represent a decimal number between 0 and 255. An IP address is shown in the image below.
+<img width="1140" height="487" alt="image" src="https://github.com/user-attachments/assets/a9893f45-aae6-4a43-acc7-e9165963c2dc" />
 ---
 
 ## Common Ports Every SOC Analyst Should Know
@@ -349,8 +350,6 @@ When you see unusual communication over these ports, ask:
 That question often starts an investigation.
 
 ---
-
-# 📚 Task-by-Task Questions, Answers & Key Takeaways
 
 ## Task 2 – OSI Model
 
@@ -400,6 +399,7 @@ Encapsulation provides structure and organization to network communication.
 | Network equivalent       | Internet    |
 
 ### Three-Way Handshake
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/851a140d-5dba-451f-985f-a0964abe1301" />
 
 1. SYN
 2. SYN/ACK
@@ -412,6 +412,8 @@ SOC analysts frequently observe handshake activity when investigating suspicious
 ---
 
 ## Task 5 – Ping
+The ping command is used when we want to test whether a connection to a remote resource is possible. Usually this will be a website on the internet, but it could also be for a computer on your home network if you want to check if it's configured correctly. Ping works using the ICMP protocol, which is one of the slightly less well-known TCP/IP protocols that were mentioned earlier.
+<img width="507" height="38" alt="image" src="https://github.com/user-attachments/assets/54b5a9fe-af2a-40fb-880d-4304bf01ab46" />
 
 ### Commands Learned
 
@@ -434,6 +436,9 @@ Ping helps verify connectivity and identify reachability issues.
 ---
 
 ## Task 6 – Traceroute
+The logical follow-up to the ping command is traceroute. Traceroute can be used to map the path your request takes as it heads to the lab machine.
+<img width="910" height="271" alt="image" src="https://github.com/user-attachments/assets/8d0a7484-bd13-4675-b2bf-f7044d9eccfb" />
+You can see that it took 13 hops to get from my router (_gateway) to the Google server at 216.58.205.46
 
 ### Useful Switches
 
@@ -454,6 +459,9 @@ Very useful during connectivity investigations.
 ---
 
 ## Task 7 – WHOIS
+Whois essentially allows you to query who a domain name is registered to. In Europe personal details are redacted; however, elsewhere you can potentially get a great deal of information from a whois search.
+<img width="1051" height="489" alt="image" src="https://github.com/user-attachments/assets/a47492f1-781f-40b6-a59d-2522b012987d" />
+This is comparatively a very small amount of information as can often be found. Notice that we've got the domain name, the company that registered the domain, the last renewal, and when it's next due, and a bunch of information about nameservers
 
 ### Key Findings
 
@@ -469,6 +477,10 @@ WHOIS is valuable during OSINT investigations and domain analysis.
 ---
 
 ## Task 8 – DIG & DNS
+At the most basic level, DNS allows us to ask a special server to give us the IP address of the website we're trying to access. For example, if we made a request to www.google.com, our computer would first send a request to a special DNS server (which your computer already knows how to find). The server would then go looking for the IP address for Google and send it back to us. Our computer could then send the request to the IP of the Google server.
+When you visit a website in your web browser this all happens automatically, but we can also do it manually with a tool called dig . Like ping and traceroute, dig should be installed automatically on Linux systems.
+<img width="616" height="366" alt="image" src="https://github.com/user-attachments/assets/3603db9a-a4a6-4ac7-8a88-a592440c9279" />
+
 
 ### Key Questions
 
@@ -526,16 +538,31 @@ OSI Layers 5, 6, and 7
 
 Because an octet cannot exceed 255.
 
+### MAC address
+MAC stands for Media Access Control,They are usually expressed in hexadecimal format with a colon separating each two hexadecimal digits (one byte). The three leftmost bytes identify the vendor. 
+<img width="1920" height="649" alt="image" src="https://github.com/user-attachments/assets/f06c76a4-49a4-44d9-a0c2-62d7748f542d" />
+
+We expect to see two MAC addresses in each frame in real network communication over Ethernet or WiFi. The packet in the screenshot below shows:
+
+. The destination data-link address (MAC address) highlighted in yellow
+
+. The source data link address (MAC address) is highlighted in blue
+
+. The remaining bits show the data being sent
+<img width="3046" height="1691" alt="image" src="https://github.com/user-attachments/assets/d6908e1c-cef8-4c47-ae7f-c0fff444f92b" />
+
 ---
 
 ## Telnet Practical
+The TELNET (Teletype Network) protocol is a network protocol for remote terminal connection. In simpler words, telnet, a TELNET client, allows you to connect to and communicate with a remote system and issue text commands. Although initially it was used for remote administration, we can use telnet to connect to any server listening on a TCP port number.
+<img width="781" height="509" alt="image" src="https://github.com/user-attachments/assets/651fbb5f-e1bf-420d-be22-c64a6900ee5e" />
 
 ### HTTP Server
-
-lighttpd/1.4.63
+<img width="1408" height="768" alt="image" src="https://github.com/user-attachments/assets/67302587-45e7-4ca2-9393-4cf6621782e4" />
+**Question 1:** Use telnet to connect to the web server on MACHINE_IP. What is the name and version of the HTTP server?
+**Answer** lighttpd/1.4.63
 
 ### Flag
-
 THM{TELNET_MASTER}
 
 ### Key Takeaway
@@ -589,7 +616,7 @@ To strengthen this foundation, I should continue learning:
 
 ---
 
-# 💼 Scenario-Based Interview Question (Critical Thinking)
+# Critical Thinking
 
 ## Question
 
