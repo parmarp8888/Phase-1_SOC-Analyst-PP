@@ -336,14 +336,21 @@ Ports provide valuable context.
 
 Examples:
 
-Port 21: FTP (File Transfer Protocol). Used to upload or download files between a computer and a server.
-Port 445: SMB (Server Message Block). Used by Windows for sharing files and printers over a network.
-Port 3306: MySQL. The default network port for the popular MySQL database server used by websites and apps.
-Port 3689: DAAP (Digital Audio Access Protocol). Used by Apple for sharing iTunes music libraries and AirPlay.
-Port 7777: Gaming. A very common default port for multiplayer video game servers (like Terraria or Sons of the Forest).
-Port 8080: HTTP Alternate. A common port used as an alternative for standard web traffic, usually for web servers or testing web applications
-Port 2222:A standard port for Secure Shell (SSH). SSH is a tool used to safely log into and control a computer from a remote location.
-Port 4444:A port commonly used by Metasploit, a popular ethical hacking and security testing tool.
+* Port 21: FTP (File Transfer Protocol). Used to upload or download files between a computer and a server.
+
+* Port 445: SMB (Server Message Block). Used by Windows for sharing files and printers over a network.
+
+* Port 3306: MySQL. The default network port for the popular MySQL database server used by websites and apps.
+
+* Port 3689: DAAP (Digital Audio Access Protocol). Used by Apple for sharing iTunes music libraries and AirPlay.
+
+* Port 7777: Gaming. A very common default port for multiplayer video game servers (like Terraria or Sons of the Forest).
+
+* Port 8080: HTTP Alternate. A common port used as an alternative for standard web traffic, usually for web servers or testing web applications
+
+* Port 2222:A standard port for Secure Shell (SSH). SSH is a tool used to safely log into and control a computer from a remote location.
+
+* Port 4444:A port commonly used by Metasploit, a popular ethical hacking and security testing tool.
 
 Combining IP and port analysis improves detection accuracy.
 
