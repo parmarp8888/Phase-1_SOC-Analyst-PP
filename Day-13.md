@@ -1,6 +1,7 @@
 # Room Walkthrough: [Traffic Analysis Essentials](https://tryhackme.com/room/trafficanalysisessentials)
 
 ## 🎯 Day 13 Objective
+<img width="1100" height="772" alt="image" src="https://github.com/user-attachments/assets/58e182a7-feae-411f-b1a3-7e975d5dffc4" />
 
 As part of my SOC Analyst L1 learning journey, this room introduced me to the foundations of Network Security and Traffic Analysis.
 
@@ -283,6 +284,7 @@ The goal is to separate legitimate traffic from suspicious traffic.
 ### Question
 
 Identify and filter malicious IP addresses.
+<img width="641" height="557" alt="image" src="https://github.com/user-attachments/assets/f21a0249-d455-453e-9395-0089abc249bc" />
 
 ### Flag
 
@@ -323,6 +325,7 @@ Monitor for:
 ### Question
 
 Identify and filter malicious IP and Port combinations.
+<img width="826" height="515" alt="image" src="https://github.com/user-attachments/assets/003bc1aa-984e-4078-9bbc-895c4deb360c" />
 
 ### Flag
 
