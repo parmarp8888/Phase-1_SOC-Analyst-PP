@@ -4,7 +4,7 @@
 ## 🎯 Day 14 Objective
 
 As part of my SOC Analyst L1 learning journey, this room helped me understand one of the most important services on the internet: DNS (Domain Name System).
-<img width="224" height="225" alt="image" src="https://github.com/user-attachments/assets/4d7b2d43-8586-4da5-a308-10b50b36cecb" />
+<img align="right" width="224" height="225" alt="image" src="https://github.com/user-attachments/assets/4d7b2d43-8586-4da5-a308-10b50b36cecb" />
 
 Before studying traffic analysis, threat hunting, or malware investigations, I wanted to understand how systems locate websites and services across the internet.
 
