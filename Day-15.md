@@ -1,5 +1,4 @@
-# Room Walkthrough: [Network Security Essentials
-](https://tryhackme.com/room/networksecurityessentials)
+# Room Walkthrough: [Network Security Essentials](https://tryhackme.com/room/networksecurityessentials)
 ## 🎯 Day 15 Objective
 
 As part of my SOC Analyst L1 learning journey, this room helped me understand how security teams monitor and defend enterprise networks against external threats.
