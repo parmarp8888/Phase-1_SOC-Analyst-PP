@@ -415,7 +415,8 @@ Monitor:
 
 ---
 
-# Task 7: Investigating the Breach
+## Task 7: Perimeter Logs – Investigating the Breach
+
 
 This was the most valuable section because it showed how multiple logs can be combined into a complete attack timeline.
 You have been given three sets of logs from the time of the incident. The logs can be found in the Perimeter_logs/challenge directory on the Desktop.
@@ -432,7 +433,6 @@ As a SOC Analyst, analyzing logs manually can become a tedious task if the log f
 To proceed, open the link **localhost:8000** in the browser, click on the **Search & Reporting** tab on the left bar, and start analyzing the logs. Logs are pre-ingested into the **index="network_logs"**, as shown below:<img width="1046" height="641" alt="image" src="https://github.com/user-attachments/assets/d8903550-359e-4088-b21b-7a0d427a916f" />
 Here must be the all step's follow and check **Time range: All time**.
 
-# Task 7: Perimeter Logs – Investigating the Breach
 
 This task simulated a real-world SOC investigation where multiple log sources were correlated to reconstruct an attack timeline.
 
