@@ -248,17 +248,14 @@ The same external IP (203.0.113.10) is trying to connect to multiple ports on th
 Analyst's Verdict: This is a classic port scan. The attacker is looking for an open service to target.
 
 ### Question
-
 Which IP performed the port scan?
 
 ### Answer
-
 203.0.113.10
 
 ### What Happened?
 
 One source repeatedly attempted connections against multiple ports.
-
 This behavior is commonly associated with reconnaissance activity.
 
 ---
@@ -272,10 +269,10 @@ This behavior is commonly associated with reconnaissance activity.
 ### Detection Opportunities
 
 Monitor:
-
 * Sequential Port Access
 * High Connection Rates
 * Multiple Destination Ports
+
 
 ---
 
@@ -307,11 +304,10 @@ The attack_type="XSS" alert is an attempt to inject malicious scripts.
 The attack_type="Directory Traversal" alert shows an attempt to read sensitive server files.
 
 Analyst's Verdict: The WAF successfully identifies and blocks multiple web attack types from suspicious IP. This is a high-confidence alert that an attacker is actively targeting the website.
+
 ---
 
-
 ### Question
-
 Which source IP generated all blocked web attacks?
 
 ### Answer
@@ -319,7 +315,6 @@ Which source IP generated all blocked web attacks?
 198.51.100.12
 
 ### What Happened?
-
 The Web Application Firewall detected repeated malicious requests targeting web services.
 
 ---
@@ -378,19 +373,15 @@ Traffic at perfect, regular intervals = Malware beaconing.
 Context is key. An IDS alert telling you why something was flagged is more valuable than a simple firewall block.
 Monitoring the network perimeter is the first step in detecting attacks.
 ### Question
-
 How many brute-force attempts failed?
 
 ### Answer
-
 90
 
 ### Question
-
 Which IP performed the attack?
 
 ### Answer
-
 45.137.22.13
 
 ---
@@ -435,150 +426,289 @@ VPN Logs:vpn_auth.log
 <img width="677" height="281" alt="image" src="https://github.com/user-attachments/assets/a2f83ee2-82da-4e43-ab7e-68ae315e97ec" />
 
 ---
-To proceed, open the link localhost:8000 in the browser, click on the Search & Reporting tab on the left bar, and start analyzing the logs. Logs are pre-ingested into the index="network_logs", as shown below:<img width="1046" height="641" alt="image" src="https://github.com/user-attachments/assets/d8903550-359e-4088-b21b-7a0d427a916f" />
+## Analyzing Logs via Splunk:
 
-## Phase 1: Reconnaissance
+As a SOC Analyst, analyzing logs manually can become a tedious task if the log files are large. Therefore, a Splunk instance is also provided in the VM if you decide to use it for log Analysis.
+To proceed, open the link **localhost:8000** in the browser, click on the **Search & Reporting** tab on the left bar, and start analyzing the logs. Logs are pre-ingested into the **index="network_logs"**, as shown below:<img width="1046" height="641" alt="image" src="https://github.com/user-attachments/assets/d8903550-359e-4088-b21b-7a0d427a916f" />
+Here must be the all step's follow and check **Time range: All time**.
 
-### Findings
+# Task 7: Perimeter Logs – Investigating the Breach
 
-External Reconnaissance Source:
+This task simulated a real-world SOC investigation where multiple log sources were correlated to reconstruct an attack timeline.
 
-10.0.0.20
+The investigation involved:
 
-Targeted Host:
+* Firewall Logs
+* VPN Authentication Logs
+* IDS Alerts
 
-10.0.0.20
+The objective was to identify reconnaissance activity, successful compromise, lateral movement, command-and-control communication, and data exfiltration.
 
 ---
 
-### ATT&CK Mapping
+## Question 1
+
+### What external IP performed the most reconnaissance?
+
+**Answer:** 203.0.113.45
+
+### SPL(Search Processing Language) Query
+
+```spl
+index="network_logs" source="firewall_logs.json" action=BLOCK
+| top src_ip
+```
+
+### Explanation
+
+This query identifies the source IP responsible for the highest number of blocked firewall events.
+
+### IOC
+
+* Source IP: 203.0.113.45
+
+### ATT&CK
 
 * T1595 – Active Scanning
 
 ---
 
-## Phase 2: Credential Attack
+## Question 2
 
-### Findings
+### Which internal host was targeted by scans?
 
-Targeted Username:
+**Answer:** 10.0.0.20
 
-svc_backup
+### SPL Query
 
-Suspicious VPN Source:
+```spl
+index="network_logs" sourcetype=firewall_logs action=BLOCK
+| stats count by dst_ip | sort -count
+```
 
-45.137.22.13
+### Explanation
+
+After identifying the attacker IP, this query determines which internal system received the highest number of scan attempts.
+
+### IOC
+
+* Internal Host: 10.0.0.20
+
+### ATT&CK
+
+* T1595 – Active Scanning
 
 ---
 
-### Analyst Observation
+## Question 3
 
-Service accounts are frequently targeted because:
+### Which username was targeted in VPN logs?
 
-* They often have elevated privileges.
-* Password rotation may be weak.
-* Monitoring is sometimes insufficient.
+**Answer:** svc_backup
 
----
+### SPL Query
 
-### ATT&CK Mapping
+```spl
+index="network_logs" source="vpn_auth.json"
+result="FAIL" src_ip="203.0.113.45"
+| top username
+```
+
+### Explanation
+
+This query identifies which account received the highest number of failed authentication attempts.
+
+### IOC
+
+* Targeted Account: svc_backup
+
+### ATT&CK
 
 * T1110 – Brute Force
+
+---
+
+## Question 4
+
+### What internal IP was assigned after successful VPN login?
+
+**Answer:** 10.8.0.23
+
+### SPL Query
+
+```spl
+index="network_logs" source="vpn_auth.json" 
+result=SUCCESS
+username=svc_backup src_ip="203.0.113.45" | table _time assigned_ip
+| sort _time
+```
+
+### Alternative SPL
+
+```spl
+index="network_logs" source="vpn_auth.log"
+status="SUCCESS" src_ip="203.0.113.45" | sort _time
+| table _time username assigned_ip
+```
+
+### Explanation
+
+The successful authentication event reveals the VPN-assigned internal address.
+
+### IOC
+
+* Username: svc_backup
+* Assigned IP: 10.8.0.23
+
+### ATT&CK
+
 * T1078 – Valid Accounts
 
 ---
 
-## Phase 3: Initial Access
+## Question 5
 
-### Findings
+### Which port was used for lateral SMB attempts?
 
-Assigned VPN Address:
+**Answer:** 445
 
-10.8.0.23
+### SPL Query
 
----
+```spl
+index="network_logs" source="ids_alert.json" alert="ET EXPLOIT Possible MS-SMB Lateral Movement" | stats count by src_ip,dst_port,dst_ip
+```
 
-### Analyst Observation
+### Explanation
 
-The successful login suggests the attacker gained valid credentials.
+Port 445 is associated with SMB and often appears during internal lateral movement.
 
-At this point, the threat actor moved from reconnaissance into active compromise.
+### IOC
 
----
+* SMB Port: 445
 
-## Phase 4: Lateral Movement
-
-### Findings
-
-SMB Port:
-
-445
-
----
-
-### Analyst Observation
-
-SMB activity frequently indicates:
-
-* File sharing
-* Internal enumeration
-* Credential harvesting attempts
-* Lateral movement
-
----
-
-### ATT&CK Mapping
+### ATT&CK
 
 * T1021.002 – SMB/Windows Admin Shares
 
 ---
 
-## Phase 5: Command and Control
+## Question 6
 
-### Findings
+### Which host beaconed to the C2?
 
-Compromised Host:
+**Answer:** 10.0.0.60
 
-10.0.0.60
+### SPL Query
 
-C2 Server:
+```spl
+index="network_logs" source="ids_alerts.json" alert="ET TROJAN Possible C2 Beaconing"
+| stats count by src_ip,dst_ip,dst_port
+```
 
-198.51.100.77
+### Explanation
 
----
-
-### Analyst Observation
-
-The IDS detected beaconing activity.
-
-Beaconing often appears as:
-
-* Regular communication intervals
-* Repeated outbound connections
-* Small but consistent traffic patterns
-
----
+IDS alerts revealed periodic communications indicative of beaconing behavior.
 
 ### IOC
 
 * Host: 10.0.0.60
-* C2 IP: 198.51.100.77
 
----
-
-### ATT&CK Mapping
+### ATT&CK
 
 * T1071 – Application Layer Protocol
 
 ---
 
-## Phase 6: Data Exfiltration
+## Question 7
 
-### Findings
+### Which IP was associated with the C2 infrastructure?
 
-Affected Host:
+**Answer:** 198.51.100.77
 
-10.0.0.51
+### SPL Query
+
+```spl
+index="network_logs" source="ids_alerts.json"
+src_ip="10.0.0.60"
+```
+
+### Alternative SPL
+
+```spl
+index="network_logs" source="ids_alerts.log"
+| table src_ip dest_ip signature
+```
+
+### Explanation
+
+The destination IP repeatedly contacted by the infected host was identified as the command-and-control server.
+
+### IOC
+
+* C2 IP: 198.51.100.77
+
+### ATT&CK
+
+* T1071 – Application Layer Protocol
+
+---
+
+## Question 8
+
+### Which host showed exfiltration attempts?
+
+**Answer:** 10.0.0.51
+
+### SPL Query
+
+```spl
+index="network_logs" source="ids_alerts.json" alert="ET INFO Possible HTTP POST Large Upload" | stats count by src_ip,dst_ip,dst_port
+```
+
+### Explanation
+
+The IDS detected suspicious outbound traffic consistent with data exfiltration behavior.
+
+### IOC
+
+* Host: 10.0.0.51
+
+### ATT&CK
+
+* T1041 – Exfiltration Over C2 Channel
+
+---
+
+## Attack Timeline Reconstruction
+
+1. Reconnaissance
+
+   * 203.0.113.45 scans perimeter systems.
+
+2. Credential Attack
+
+   * svc_backup targeted through VPN brute-force attempts.
+
+3. Initial Access
+
+   * Successful VPN login.
+   * Internal IP assigned: 10.8.0.23.
+
+4. Lateral Movement
+
+   * SMB activity observed over port 445.
+
+5. Command & Control
+
+   * Host 10.0.0.60 begins beaconing.
+   * C2 IP identified as 198.51.100.77.
+
+6. Data Exfiltration
+
+   * Host 10.0.0.51 generates exfiltration alerts.
+
+This sequence represents a realistic attack chain that a SOC analyst may investigate in an enterprise environment.
+
 
 ---
 
@@ -692,16 +822,15 @@ This room effectively demonstrated the full lifecycle of an intrusion.
 
 To build on this room, I should continue learning:
 
-1. TCP/IP Fundamentals
-2. Firewall Analysis
-3. IDS/IPS Technologies
-4. VPN Security Monitoring
-5. Network Traffic Analysis
-6. Wireshark
-7. Zeek
-8. MITRE ATT&CK
-9. Threat Hunting
-10. Incident Response
+1. Firewall Analysis
+2. IDS/IPS Technologies
+3. VPN Security Monitoring
+4. Network Traffic Analysis
+5. Wireshark
+6. Zeek
+7. MITRE ATT&CK
+8. Threat Hunting
+9. Incident Response
 
 ---
 
