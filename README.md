@@ -2,7 +2,7 @@
 ### Table of Contents:
 | Phase | Topics / Modules | Duration | Status | Milestone Project |
 | :--- | :--- | :--- | :--- | :--- |
-| **Phase 1** | [Networking & Traffic Analysis](./Phase-01-Networking-Traffic-Analysis/) | **Day  12-18** |  🔵DONE | **Real PCAP Traffic Analysis and Beaconing Detection using Wireshark** |
+| **Phase 1** | [Networking & Traffic Analysis](https://github.com/parmarp8888/Phase-1_SOC-Analyst-PP/) | **Day  12-18** |  🔵DONE | **Real PCAP Traffic Analysis and Beaconing Detection using Wireshark** |
 | | [Network Traffic Basics](Day-12.md) | Day 12 |  | 
 | | [Traffic Analysis Essentials](Day-13.md) | Day 13 |  | 
 | | [ DNS in Detail ](Day-14.md) | Day 14 |  |  
